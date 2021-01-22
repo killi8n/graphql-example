@@ -1,26 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { FC } from 'react';
+import { useQuery, gql } from '@apollo/client';
 
-function App() {
+const BOOKS = gql`
+  query Books {
+    books {
+      title
+      author
+    }
+  }
+`;
+
+const App: FC = () => {
+  const { loading, data, error } = useQuery<{
+    books: { title: string; author: string }[];
+  }>(BOOKS);
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error :(</p>;
+  if (!data) return <p>No data</p>;
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {data.books.map((book) => (
+        <div key={`${book.title}-${book.author}`}>
+          {book.title} / {book.author}
+        </div>
+      ))}
     </div>
   );
-}
+};
 
 export default App;

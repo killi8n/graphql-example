@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -9,26 +9,14 @@ const client = new ApolloClient({
   uri: 'http://localhost:4000',
   cache: new InMemoryCache(),
 });
-
-client
-  .query({
-    query: gql`
-      query GetRates {
-        books {
-          title
-          author
-        }
-      }
-    `,
-  })
-  .then((result) => console.log(result));
-
 // eslint-disable-next-line no-console
 console.log(client.version);
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 );
