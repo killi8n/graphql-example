@@ -1,5 +1,7 @@
 import React, { FC } from 'react'
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { Main, OAuthCode } from './pages'
 import './App.css'
 
 const client = new ApolloClient({
@@ -9,7 +11,16 @@ const client = new ApolloClient({
 
 const App: FC = () => (
     <ApolloProvider client={client}>
-        <div>Hello</div>
+        <BrowserRouter>
+            <Switch>
+                <Route exact path="/">
+                    <Main />
+                </Route>
+                <Route path="/oauth/github">
+                    <OAuthCode />
+                </Route>
+            </Switch>
+        </BrowserRouter>
     </ApolloProvider>
 )
 
