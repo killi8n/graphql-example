@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { Main, OAuthCode } from './pages'
-import './App.css'
+import PageLayout from './components/PageLayout'
 
 const client = new ApolloClient({
     uri: 'https://api.github.com/graphql',
@@ -12,14 +12,16 @@ const client = new ApolloClient({
 const App: FC = () => (
     <ApolloProvider client={client}>
         <BrowserRouter>
-            <Switch>
-                <Route exact path="/">
-                    <Main />
-                </Route>
-                <Route path="/oauth/github">
-                    <OAuthCode />
-                </Route>
-            </Switch>
+            <PageLayout>
+                <Switch>
+                    <Route exact path="/">
+                        <Main />
+                    </Route>
+                    <Route path="/oauth/github">
+                        <OAuthCode />
+                    </Route>
+                </Switch>
+            </PageLayout>
         </BrowserRouter>
     </ApolloProvider>
 )

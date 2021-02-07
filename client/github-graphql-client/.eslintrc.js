@@ -36,6 +36,7 @@ module.exports = {
                 tsx: 'never',
             },
         ],
+        'react/prop-types': 'off',
     },
     settings: {
         'import/resolver': {
