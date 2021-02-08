@@ -1,6 +1,9 @@
 import { FastifyPluginCallback } from 'fastify'
 import axios from 'axios'
+import dotenv from 'dotenv'
 import GithubOAuthTokenBody from '../../../schema/oauth/GithubOAuthTokenBody.json'
+
+dotenv.config()
 
 const { GITHUB_OAUTH_CLIENT_ID, GITHUB_OAUTH_SECRET } = process.env
 

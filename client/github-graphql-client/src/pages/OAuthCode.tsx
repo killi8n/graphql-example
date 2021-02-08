@@ -1,10 +1,6 @@
 import React, { useEffect } from 'react'
-import { GITHUB } from '../lib/constants'
-
-const {
-    REACT_APP_GITHUB_OAUTH_SECRET,
-    REACT_APP_GITHUB_OAUTH_CLIENT_ID,
-} = process.env
+import { STORAGE_KEYS } from '../lib/constants'
+import storage from '../lib/storage'
 
 const OAuthCode = () => {
     useEffect(() => {
@@ -13,20 +9,24 @@ const OAuthCode = () => {
             const code = search.split('?code=').join('')
             if (code) {
                 window
-                    .fetch(GITHUB.OAUTH_GET_TOKEN_URI, {
+                    .fetch('/api/oauth/github', {
                         method: 'POST',
-                        body: JSON.stringify({
-                            client_id: REACT_APP_GITHUB_OAUTH_CLIENT_ID,
-                            client_secret: REACT_APP_GITHUB_OAUTH_SECRET,
-                            code,
-                        }),
+                        body: JSON.stringify({ code }),
                         headers: {
                             Accept: 'application/json',
                             'Content-Type': 'application/json',
                         },
                     })
-                    .then((res) => {
-                        console.log(res)
+                    .then(async (res) => {
+                        const { access_token: accessToken } = await res.json()
+                        if (accessToken) {
+                            storage.set(STORAGE_KEYS.TOKEN, {
+                                token: accessToken,
+                            })
+                            window.location.href = '/'
+                        } else {
+                            storage.delete(STORAGE_KEYS.TOKEN)
+                        }
                     })
                     .catch((e) => {
                         console.error(e)
@@ -34,7 +34,7 @@ const OAuthCode = () => {
             }
         }
     }, [])
-    return <div>Hello</div>
+    return <div>Loading...</div>
 }
 
 export default OAuthCode

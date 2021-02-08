@@ -1,8 +1,5 @@
 import fastify from 'fastify'
-import dotenv from 'dotenv'
 import api from './api'
-
-dotenv.config()
 
 const start = async () => {
     const server = fastify({ logger: true })
