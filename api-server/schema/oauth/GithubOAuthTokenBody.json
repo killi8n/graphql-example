@@ -1,0 +1,6 @@
+{
+    "title": "GithubOAuthToken Body",
+    "type": "object",
+    "properties": { "code": { "type": "string" } },
+    "required": ["code"]
+}
